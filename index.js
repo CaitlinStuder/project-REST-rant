@@ -11,6 +11,8 @@ app.use(express.static('public'))
 // importing router from places.js file
 // first argument '/places' sets all routes in the places controller relative to /places. This means that /places will be added in front of any other path we define in the controller
 app.use('/places', require('./controllers/places'))
+app.use(express.urlencoded({ extended: true }))
+
 
 app.get('/', (req, res) => {
     res.render('home')

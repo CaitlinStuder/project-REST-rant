@@ -1,8 +1,11 @@
 const router = require('express').Router()
 const places = require('../models/places')
 
+router.get('/', (req, res) => {
+  res.render('places/index', { places })
+})
+
 router.post('/', (req, res) => {
-  console.log(req.body)
   if (!req.body.pic) {
     // Default image if one is not provided
     req.body.pic = 'http://placekitten.com/400/400'
@@ -16,38 +19,48 @@ router.post('/', (req, res) => {
   places.push(req.body)
   res.redirect('/places')
 })
-
-// GET /places
-router.get('/', (req, res) => {
-  res.render('places/index', { places })
-})
-
 router.get('/new', (req, res) => {
-	res.render('places/new')
-  }
-)
-
+  res.render('places/new')
+})
 router.get('/:id', (req, res) => {
-  let id = Number(req.params.id)
-  if (isNaN(id)) {
+  let i = Number(req.params.id)
+  if (isNaN(i)) {
       res.render('error404')
-  } else if (!places[id]) {
+  }
+  else if (!places[i]) {
       res.render('error404')
-  } else {
-      res.render('places/show', { place: places[id], id })
+  }
+  else {
+      res.render('places/show', { place: places[i], i })
   }
 })
 
-router.delete('/places/:id', (req, res) => {
-  let id = Number(req.params.id)
-  if (isNaN(id)) {
+router.put('/:id', (req, res) => {
+  res.send('PUT /places/:id stub')
+})
+
+router.delete('/:id', (req, res) => {
+  let i = Number(req.params.id)
+  if (isNaN(i)) {
       res.render('error404')
-  } else if (!places[id]) {
+  }
+  else if (!places[i]) {
       res.render('error404')
-  } else {
+  }
+  else { 
       places.splice(i, 1)
       res.redirect('/places')
   }
+})
+
+router.get('/:id/edit', (req, res) => {
+  res.send('GET /places/:id/edit stub')
+})
+router.post('/:id/rant', (req, res) => {
+  res.send('GET /places/:id/rant stub')
+})
+router.delete('/:id/rant/:rantId', (req, res) => {
+  res.send('GET /places/:id/rant/:rantId stub')
 })
 
 module.exports = router
